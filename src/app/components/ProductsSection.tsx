@@ -182,24 +182,24 @@ export function ProductsSection() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-        <div className="bg-white rounded-lg p-3 lg:p-4 border border-gray-200">
-          <p className="text-xs lg:text-sm text-gray-600">Total Productos</p>
-          <p className="text-xl lg:text-2xl font-semibold text-gray-900 mt-1">{stats.total}</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 lg:p-4 border border-gray-200">
+          <p className="text-xs lg:text-sm text-gray-400">Total Productos</p>
+          <p className="text-xl lg:text-2xl font-semibold text-gray-900 mt-1 dark:text-white">{stats.total}</p>
         </div>
-        <div className="bg-white rounded-lg p-3 lg:p-4 border border-gray-200">
-          <p className="text-xs lg:text-sm text-gray-600">Activos</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 lg:p-4 border border-gray-200">
+          <p className="text-xs lg:text-sm text-gray-400">Activos</p>
           <p className="text-xl lg:text-2xl font-semibold text-green-600 mt-1">
             {stats.active}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-3 lg:p-4 border border-gray-200">
-          <p className="text-xs lg:text-sm text-gray-600">Stock Bajo</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 lg:p-4 border border-gray-200">
+          <p className="text-xs lg:text-sm text-gray-400">Stock Bajo</p>
           <p className="text-xl lg:text-2xl font-semibold text-orange-600 mt-1">
             {stats.lowStock}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-3 lg:p-4 border border-gray-200">
-          <p className="text-xs lg:text-sm text-gray-600">Sin Stock</p>
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-3 lg:p-4 border border-gray-200">
+          <p className="text-xs lg:text-sm text-gray-400">Sin Stock</p>
           <p className="text-xl lg:text-2xl font-semibold text-red-600 mt-1">
             {stats.outOfStock}
           </p>
@@ -207,7 +207,7 @@ export function ProductsSection() {
       </div>
 
       {/* Filters and View Toggle */}
-      <div className="bg-white rounded-lg lg:rounded-xl p-4 lg:p-6 border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg lg:rounded-xl p-4 lg:p-6 border border-gray-200">
         <div className="flex flex-col gap-3 lg:gap-4 mb-4 lg:mb-6">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 lg:w-5 lg:h-5 text-gray-400" />
@@ -224,7 +224,7 @@ export function ProductsSection() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="flex-1 px-3 lg:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm lg:text-base"
+              className="dark:bg-gray-800 flex-1 px-3 lg:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm lg:text-base"
             >
               {categoriesForFilter.map(cat => (
                 <option key={cat} value={cat}>
@@ -265,27 +265,27 @@ export function ProductsSection() {
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                      <p className="text-sm text-gray-600">{product.category?.name}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{product.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{product.category?.name}</p>
                     </div>
                     {getStatusBadge(product.stock)}
                   </div>
                   <p className="text-xs text-gray-500 mb-2">SKU: {product.sku}</p>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-lg font-semibold text-gray-900">€{product.price}</span>
-                    <span className="text-sm text-gray-600">Stock: {product.stock}</span>
+                    <span className="text-lg font-semibold text-gray-900 dark:text-white">${product.price}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Stock: {product.stock}</span>
                   </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => openEditModal(product)}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:hover:text-gray-700 transition-colors text-sm font-medium text-gray-700 dark:text-white"
                     >
                       <Edit className="w-4 h-4 inline mr-1" />
                       Editar
                     </button>
                     <button
                       onClick={() => handleDeleteProduct(product.id)}
-                      className="p-2 border border-gray-300 rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors text-gray-700 hover:text-red-600"
+                      className="p-2 border border-gray-300 rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors text-gray-700 dark:text-gray-400 hover:text-red-600"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

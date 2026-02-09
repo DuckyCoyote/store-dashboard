@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { apiClient } from '../../lib/api';
+import { set } from 'react-hook-form';
 
 interface Product {
   id?: string;
@@ -57,6 +58,30 @@ export function ProductModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [sizesInput, setSizesInput] = useState('');
   const [colorsInput, setColorsInput] = useState('');
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+      price: 0,
+      stock: 0,
+      categoryId: categories[0]?.id || '',
+      images: [],
+      sizes: [],
+      colors: [],
+      sku: '',
+      isActive: true,
+      isNew: false,
+      isFeatured: false,
+    });
+    setSizesInput('');
+    setColorsInput('');
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
 
   useEffect(() => {
     if (product) {
@@ -112,6 +137,7 @@ export function ProductModal({
           ? 'Producto actualizado correctamente'
           : 'Producto creado correctamente',
       );
+      resetForm();
       onClose();
     } catch (error: any) {
       console.error('Error al guardar producto:', error);
@@ -209,16 +235,16 @@ export function ProductModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-800">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             {product ? 'Editar Producto' : 'Nuevo Producto'}
           </h2>
           <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            onClick={handleClose}
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -228,13 +254,13 @@ export function ProductModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información Básica */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Información Básica
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Nombre del Producto</Label>
+                <Label htmlFor="name" className="text-gray-700 dark:text-gray-200">Nombre del Producto</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -247,7 +273,7 @@ export function ProductModal({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="sku">SKU</Label>
+                <Label htmlFor="sku" className="text-gray-700 dark:text-gray-200">SKU</Label>
                 <Input
                   id="sku"
                   value={formData.sku}
@@ -261,7 +287,7 @@ export function ProductModal({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Descripción</Label>
+              <Label htmlFor="description" className="text-gray-700 dark:text-gray-200">Descripción</Label>
               <textarea
                 id="description"
                 value={formData.description}
@@ -270,20 +296,20 @@ export function ProductModal({
                 }
                 placeholder="Descripción del producto..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="categoryId">Categoría</Label>
+              <Label htmlFor="categoryId" className="text-gray-700 dark:text-gray-200">Categoría</Label>
               <select
                 id="categoryId"
                 value={formData.categoryId}
                 onChange={(e) =>
                   setFormData({ ...formData, categoryId: e.target.value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 required
               >
                 <option value="">Seleccionar categoría</option>
@@ -298,13 +324,13 @@ export function ProductModal({
 
           {/* Precio e Inventario */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Precio e Inventario
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Precio ($)</Label>
+                <Label htmlFor="price" className="text-gray-700 dark:text-gray-200">Precio ($)</Label>
                 <Input
                   id="price"
                   type="number"
@@ -322,7 +348,7 @@ export function ProductModal({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="stock">Stock</Label>
+                <Label htmlFor="stock" className="text-gray-700 dark:text-gray-200">Stock</Label>
                 <Input
                   id="stock"
                   type="number"
@@ -342,7 +368,7 @@ export function ProductModal({
 
           {/* Imágenes */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Imágenes</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Imágenes</h3>
 
             {/* Drag and Drop Area */}
             <div
@@ -354,8 +380,8 @@ export function ProductModal({
                 border-2 border-dashed rounded-lg p-8 text-center transition-all
                 ${
                   isDragging
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-gray-800'
+                    : 'border-gray-300 dark:border-gray-700 hover:border-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                 }
                 ${isUploading ? 'cursor-wait opacity-60' : 'cursor-pointer'}
               `}
@@ -363,21 +389,21 @@ export function ProductModal({
               {isUploading ? (
                 <>
                   <Loader2 className="w-12 h-12 text-blue-500 mx-auto mb-3 animate-spin" />
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     Subiendo imágenes...
                   </p>
-                  <p className="text-xs text-gray-500">Por favor espera</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Por favor espera</p>
                 </>
               ) : (
                 <>
                   <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
                     <span className="font-semibold text-blue-600">
                       Click para seleccionar
                     </span>{' '}
                     o arrastra imágenes aquí
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     PNG, JPG, GIF hasta 10MB
                   </p>
                 </>
@@ -401,7 +427,7 @@ export function ProductModal({
                     <img
                       src={image}
                       alt={`Product ${index + 1}`}
-                      className="w-full h-24 object-cover rounded-lg border border-gray-200"
+                      className="w-full h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
                     />
                     <button
                       type="button"
@@ -435,11 +461,11 @@ export function ProductModal({
 
           {/* Variantes */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Variantes</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Variantes</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="sizes">Tallas (separadas por coma)</Label>
+                <Label htmlFor="sizes" className="text-gray-700 dark:text-gray-200">Tallas (separadas por coma)</Label>
                 <Input
                   id="sizes"
                   value={sizesInput}
@@ -451,7 +477,7 @@ export function ProductModal({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="colors">Colores (separados por coma)</Label>
+                <Label htmlFor="colors" className="text-gray-700 dark:text-gray-200">Colores (separados por coma)</Label>
                 <Input
                   id="colors"
                   value={colorsInput}
@@ -464,7 +490,7 @@ export function ProductModal({
 
           {/* Opciones */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Opciones</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Opciones</h3>
 
             <div className="space-y-3">
               <label className="flex items-center gap-2">
@@ -476,7 +502,7 @@ export function ProductModal({
                   }
                   className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <span className="text-sm text-gray-700">Producto activo</span>
+                <span className="text-sm text-gray-200">Producto activo</span>
               </label>
 
               <label className="flex items-center gap-2">
@@ -488,7 +514,7 @@ export function ProductModal({
                   }
                   className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <span className="text-sm text-gray-700">Marcar como nuevo</span>
+                <span className="text-sm text-gray-200">Marcar como nuevo</span>
               </label>
 
               <label className="flex items-center gap-2">
@@ -500,7 +526,7 @@ export function ProductModal({
                   }
                   className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-gray-200">
                   Producto destacado
                 </span>
               </label>
@@ -508,10 +534,10 @@ export function ProductModal({
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3 pt-4 border-t">
+          <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-800">
             <Button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               variant="outline"
               className="flex-1"
               disabled={isSubmitting}
